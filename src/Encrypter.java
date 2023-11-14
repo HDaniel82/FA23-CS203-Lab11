@@ -36,6 +36,7 @@ public class Encrypter {
      */
     public void encrypt(String inputFilePath, String encryptedFilePath) throws Exception {
         //TODO: Call the read method, encrypt the file contents, and then write to new file
+    	
     	String content = readFile(inputFilePath);
     	String encryptedContent = encryptText(content, shift);
     	writeFile(encryptedContent, encryptedFilePath);
@@ -67,6 +68,7 @@ public class Encrypter {
      */
     public void decrypt(String messageFilePath, String decryptedFilePath) throws Exception {
         //TODO: Call the read method, decrypt the file contents, and then write to new file
+    	FileWriter filewriter = new FileWriter ("decrypted.txt");
     	String encryptedContent = readFile(messageFilePath);
     	String decrpytedContent = decryptText (encryptedContent, shift); 
     	writeFile(decrpytedContent, decryptedFilePath); 
