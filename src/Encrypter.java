@@ -50,7 +50,7 @@ public class Encrypter {
     			char shifted = (char) (c + shift);
     			if ((Character.isUpperCase(c) && shifted > 'Z') || 
     				(Character.isLowerCase(c) && shifted > 'z')) {
-    				shifted = (char) (c - (24 - shift));
+    				shifted = (char) (c - (26 - shift));
     			}
     			encryptedText.append(shifted);
     		}else {
@@ -81,7 +81,7 @@ public class Encrypter {
     			char decryptChar = (char) (c - shift);
     			if ((Character.isUpperCase(c) && decryptChar > 'Z') || 
     				(Character.isLowerCase(c) && decryptChar > 'z')) {
-    				decryptChar = (char) (c + (24 - shift));
+    				decryptChar = (char) (c + (26 - shift));
     			}
     			decryptedText.append(decryptChar);
     		}else {
