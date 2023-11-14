@@ -36,7 +36,8 @@ public class Encrypter {
      */
     public void encrypt(String inputFilePath, String encryptedFilePath) throws Exception {
         //TODO: Call the read method, encrypt the file contents, and then write to new file
-    	
+    	Paths.get("encrypted.txt");
+    	FileWriter filewriter = new FileWriter ("encrypted.txt");
     	String content = readFile(inputFilePath);
     	String encryptedContent = encryptText(content, shift);
     	writeFile(encryptedContent, encryptedFilePath);
