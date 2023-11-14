@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Encrypter {
@@ -34,8 +36,28 @@ public class Encrypter {
      */
     public void encrypt(String inputFilePath, String encryptedFilePath) throws Exception {
         //TODO: Call the read method, encrypt the file contents, and then write to new file
+    	String content = readFile(inputFilePath);
+    	String encryptedContent = encryptText(content, shift);
+    	writeFile(encryptedContent, encryptedFilePath);
     }
-
+    
+    private String encryptText (String text, int shift) {
+    	StringBuilder encryptedText = new StringBuilder();
+    	
+    	for (char c : text.toCharArray()) {
+    		if (Character.isLetter(c)) {
+    			char shifted = (char) (c + shift);
+    			if ((Character.isUpperCase(c) && shifted > 'Z') || 
+    				(Character.isLowerCase(c) && shifted > 'z')) {
+    				shifted = (char) (c - (26 - shift));
+    			}
+    			encryptedText.append(shifted);
+    		}else {
+    			encryptedText.append(c);
+    		}	
+    	}
+    	return encryptedText.toString();
+    }
     /**
      * Decrypts the content of an encrypted file and writes the result to another file.
      *
@@ -45,8 +67,27 @@ public class Encrypter {
      */
     public void decrypt(String messageFilePath, String decryptedFilePath) throws Exception {
         //TODO: Call the read method, decrypt the file contents, and then write to new file
+    	String encryptedContent = readFile(messageFilePath);
+    	String decrpytedContent = decryptText (encryptedContent, shift); 
+    	writeFile(decrpytedContent, decryptedFilePath); 
     }
-
+    private String decryptText(String text, int shift) {
+    	StringBuilder decryptedText = new StringBuilder(); 
+    	
+    	for (char c : text.toCharArray()) {
+    		if (Character.isLetter(c)) {
+    			char decryptChar = (char) (c - shift);
+    			if ((Character.isUpperCase(c) && decryptChar > 'Z') || 
+    				(Character.isLowerCase(c) && decryptChar > 'z')) {
+    				decryptChar = (char) (c + (26 - shift));
+    			}
+    			decryptedText.append(decryptChar);
+    		}else {
+    			decryptedText.append(c);
+    		}	
+    	}
+    	return decryptedText.toString();
+    }
     /**
      * Reads the content of a file and returns it as a string.
      *
@@ -55,11 +96,18 @@ public class Encrypter {
      * @throws Exception if an error occurs while reading the file
      */
     private static String readFile(String filePath) throws Exception {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         //TODO: Read file from filePath
-        return message;
-    }
-
+        try (Scanner fileScanner = new Scanner(new File(filePath))){
+        	while(fileScanner.hasNextLine()) {
+        		message.append(fileScanner.nextLine()).append("\n");
+        	}
+        	fileScanner.close();
+        	} catch (Exception e) {
+        		System.out.println("Error: " + e.getMessage());
+        	}
+        return message.toString();
+        }
     /**
      * Writes data to a file.
      *
@@ -68,6 +116,11 @@ public class Encrypter {
      */
     private static void writeFile(String data, String filePath) {
         //TODO: Write to filePath
+    	try (PrintWriter output = new PrintWriter(new FileWriter(filePath))){
+    	output.print(data);
+    	} catch (Exception e) {
+    		System.out.println("Error reading file:" + e.getMessage());
+    	}
     }
 
     /**
